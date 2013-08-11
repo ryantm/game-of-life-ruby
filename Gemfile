@@ -6,4 +6,5 @@ group :development do
   gem 'coolline', :require => false
   gem 'libnotify'
   gem 'rb-inotify'
+  gem 'shuhari'
 end
