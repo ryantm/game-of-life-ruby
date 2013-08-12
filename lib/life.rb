@@ -1,18 +1,12 @@
-require 'matrix'
 module Life
-  def Life.simulate(array)
-    puts "\n"+array.inspect.split("],").join("],\n")
-    evolve(array)
-  end
-
-  def Life.evolve(array)
-    array.collect.with_index do |row, y|
-      row.collect.with_index do |_,x|
-        case neighbors(array,x,y)
+  def Life.evolve(world)
+    world.collect.with_index do |row, y|
+      world.collect.with_index do |cell, x|
+        case neighbors(world,x,y)
         when 0,1,4..8
           0
         when 2
-          array[y][x]
+          world[y][x]
         when 3
           1
         end
@@ -20,18 +14,18 @@ module Life
     end
   end
 
-  def Life.neighbors(array,x,y)
+  def Life.neighbors(world, x, y)
     [ 
-      [-1,-1], [0,-1], [1,-1],
-      [-1, 0],         [1, 0],
-      [-1, 1], [0, 1], [1, 1]
-    ].inject(0) do |sum, direction|
-      neighbor_x = x + direction[0]
-      neighbor_y = y + direction[1]
-      neighbor_y = 0 if neighbor_y >= array.size
-      row = array[neighbor_y]
-      neighbor_x = 0 if neighbor_x >= row.size
-      sum + row[neighbor_x]
+      [-1, -1], [ 0, -1], [1, -1],
+      [-1,  0],           [1,  0],
+      [-1,  1], [ 0,  1], [1,  1]
+    ].inject(0) do |sum, offset|
+      x_offset = x + offset[0]
+      y_offset = y + offset[1]
+      y_offset = 0 if y_offset >= world.size
+      row = world[y_offset]
+      x_offset = 0 if x_offset >= row.size
+      sum + row[x_offset]
     end
   end
 end
